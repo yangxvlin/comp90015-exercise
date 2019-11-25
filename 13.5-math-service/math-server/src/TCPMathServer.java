@@ -20,19 +20,24 @@ public class TCPMathServer extends MathServer {
     @Override
     public void run() {
         try {
+            // prepare
             Socket socket = this.serverSocket.accept();
             BufferedReader reader = new BufferedReader(
                     new InputStreamReader(socket.getInputStream()));
             BufferedWriter writer = new BufferedWriter(
                     new OutputStreamWriter(socket.getOutputStream()));
 
+            // receive
             String input = reader.readLine();
             System.out.println("TCP Read from client: " + input);
             String output = execute(input);
+
+            // response
             writer.write(output);
             writer.newLine();
             writer.flush();
 
+            // end
             reader.close();
             writer.close();
             socket.close();
