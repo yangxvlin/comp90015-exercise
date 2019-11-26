@@ -37,6 +37,7 @@ public class TCPServer {
                     writer.newLine();
                     writer.flush();
                 } else {
+                    writer.write(request.toUpperCase());
                     writer.newLine();
                     writer.flush();
                 }
