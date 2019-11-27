@@ -21,17 +21,7 @@ public class CustomerTransaction extends Thread {
     @Override
     public void run() {
         super.run();
-
-        try {
-            while (!fruitMarket.isEnoughCapacity(fruit, BUY)) {
-                wait();
-            }
-
-            fruitMarket.transcateFruit(fruit, BUY);
-            notifyAll();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        fruitMarket.transactFruit(fruit, BUY);
     }
 
 }

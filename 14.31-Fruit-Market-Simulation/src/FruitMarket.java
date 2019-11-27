@@ -49,17 +49,16 @@ public class FruitMarket {
         return (fruitResult >= NO_FRUIT) && (fruitResult <= fruitCapacity);
     }
 
-    public synchronized void transcateFruit(Fruit fruit, int isSell) {
-        String fruitName = fruit.getClass().getSimpleName();
-
-        if (!isEnoughCapacity(fruit, isSell)) {
-            System.out.println("Invalid operation!!!");
-            System.out.println(this);
-            System.out.println(fruitName + ": " +
-                    fruit.getQuantity() +
-                    (isSell > 0 ? "sell": "buy"));
-            System.exit(1);
+    public synchronized void transactFruit(Fruit fruit, int isSell) {
+        try {
+            while (!isEnoughCapacity(fruit, isSell)) {
+                wait();
+            }
+        } catch (InterruptedException e) {
+            //
         }
+
+        String fruitName = fruit.getClass().getSimpleName();
 
         // farmer sell to market
         if (isSell > 0) {
@@ -77,6 +76,8 @@ public class FruitMarket {
         Fruit marketFruit = this.fruits.get(fruitName);
         marketFruit.setQuantity(marketFruit.getQuantity() + isSell * fruit.getQuantity());
         System.out.println("After : " + this);
+
+        notifyAll();
     }
 
     @Override

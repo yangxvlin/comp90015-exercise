@@ -20,16 +20,6 @@ public class FarmerTransaction extends Thread {
     @Override
     public void run() {
         super.run();
-
-        try {
-            while (!fruitMarket.isEnoughCapacity(fruit, SELL)) {
-                wait();
-            }
-
-            fruitMarket.transcateFruit(fruit, SELL);
-            notifyAll();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        fruitMarket.transactFruit(fruit, SELL);
     }
 }
